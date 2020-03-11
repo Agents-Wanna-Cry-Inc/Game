@@ -19,11 +19,12 @@ public class Afra_move_on : MonoBehaviour
         {
             transform.position += (velocity * Time.deltaTime);
         }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Ground")
+        if (collision.collider.tag == "moving_ground")
         {
             moving = true;
             collision.collider.transform.SetParent(transform);
@@ -33,10 +34,9 @@ public class Afra_move_on : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Ground")
+        if (collision.collider.tag == "moving_ground")
         {
             collision.collider.transform.SetParent(null);
-            //moving = false;
         }
 
     }

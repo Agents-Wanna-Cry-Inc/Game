@@ -5,9 +5,10 @@ using UnityEngine;
 public class Afra_enemy : MonoBehaviour
 {
     Transform target;
+    Transform goTo;
     public float speed = 5f;
-    float stoppingDistance = 13.6236f;
-    float returnDistance = 9.6236f;
+    public float stoppingDistance = 2f;
+    public float returnDistance = 4f;
 
     public GameObject enemy;
     public bool notGrounded = true;
@@ -16,6 +17,7 @@ public class Afra_enemy : MonoBehaviour
     public Transform shotPoint;
     public float tellerAvoid = 2;
     public float jumpteller = 3f;
+    float jumprichting;
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +56,7 @@ public class Afra_enemy : MonoBehaviour
         if(notGrounded == true && isGrounded2 == true)
         {
             Debug.Log("JUMP FORWARD");
-            Jump();
+            Jump(-1f);
         }
                 
             
@@ -62,16 +64,16 @@ public class Afra_enemy : MonoBehaviour
         {
             if(jumpteller > 0)
             {
-                Jump();
-                Debug.Log("JUMP BACK");
                 jumpteller -= 1;
+                Debug.Log("JUMP BACK");
+                Jump(1f);
+ 
             }
             else
             {
                 Debug.Log("STAND");
                 returnDistance = 0;
-                transform.position = this.transform.position;
-                
+                transform.position = this.transform.position;             
             }
                 
         }
@@ -79,7 +81,7 @@ public class Afra_enemy : MonoBehaviour
 
         if (Vector2.Distance(transform.position, shotPoint.transform.position) < 10.6f && tellerAvoid>0)
         {
-            Debug.Log("TRY TO AVOID BULLET");
+            Debug.Log("TRY TO AVOID DOG");
             Avoid();
             tellerAvoid -= 1;
         }
@@ -92,12 +94,23 @@ public class Afra_enemy : MonoBehaviour
 
     void Avoid()
     {
-        //Jump();
+        
+            goTo = this.transform;
+            goTo.transform.position = goTo.transform.position + new Vector3(3f, 0, 0);
+            transform.position = Vector2.MoveTowards(transform.position, goTo.position, speed * Time.deltaTime);
+
+        
     }
 
-    void Jump()
+    void Jump(float jumprichting)
     {
-        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2), ForceMode2D.Impulse); //omhoog
-        GetComponent<Rigidbody2D>().velocity = new Vector2( -1 * 2, GetComponent<Rigidbody2D>().velocity.y); //naar voren
+
+        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 3), ForceMode2D.Impulse); //omhoog 
+        GetComponent<Rigidbody2D>().velocity = new Vector2( jumprichting * 2, GetComponent<Rigidbody2D>().velocity.y); //naar voren
+
     }
+
+
 }
+
+

@@ -21,18 +21,19 @@ public class move2D : MonoBehaviour
     // variables needed for climbing ladders
     public float distance = 5; // distane of the rays
     public LayerMask whatIsLadder; // indicates what we can climb using layers
-    
-    
-    
+
+    GameObject dog;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        dog = GameObject.FindWithTag("dog");
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         // basic left-right movement using rigidbody
         inputHorizontal = Input.GetAxisRaw("Horizontal");
@@ -43,8 +44,15 @@ public class move2D : MonoBehaviour
         //transform.position += movement * Time.deltaTime * moveSpeed;
 
         Jump(); // calling the jumping method
-        Climb(); // used for climbing ladders        
+        Climb(); // used for climbing ladders   
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            dog.GetComponent<dog_behaviour>().Command = true;
+        }
+        
     }
+
 
     void Climb()
     {
@@ -82,5 +90,25 @@ public class move2D : MonoBehaviour
         }   
     }
 
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "moving_ground")
+        {
+            this.transform.parent = collision.transform;
+
+        }
+
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "moving_ground")
+        {
+            this.transform.parent = null;
+        }
+
+    }
+
+
 }

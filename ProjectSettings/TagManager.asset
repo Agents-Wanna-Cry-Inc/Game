@@ -10,6 +10,9 @@ TagManager:
   - Ladder
   - change
   - Weapon
+  - moving_ground
+  - dog
+  - jumpPoint
   layers:
   - Default
   - TransparentFX
@@ -24,7 +27,7 @@ TagManager:
   - Ladder
   - Platform
   - Falling
-  - 
+  - dog
   - 
   - 
   - 
